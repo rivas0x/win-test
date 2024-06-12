@@ -25,13 +25,4 @@ class FilterRequest extends FormRequest
             'amount' => 'nullable|in:ASC,DESC',
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'status.in' => 'El parámetro status solo puede ser "ASC" o "DESC".',
-            'group_id.in' => 'El parámetro group_id solo puede ser "ASC" o "DESC".',
-            'amount.in' => 'El parámetro amount solo puede ser "ASC" o "DESC".',
-        ];
-    }
 }

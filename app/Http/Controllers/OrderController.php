@@ -47,8 +47,6 @@ class OrderController extends Controller
     public function index(FilterRequest $request) // Requerimiento (C)
     {
         try {
-            $request = $request->validated();
-
             $orders = Order::query();
 
             if(count($request->all()) > 0){
