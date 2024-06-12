@@ -14,3 +14,7 @@
 - _`Configurar la variable (url) de la colección a su caso.`_
 
 ![](https://img001.prntscr.com/file/img001/JQjJjWZvSIGjVoolSj5WjA.png)
+
+## Tests
+
+![](https://img001.prntscr.com/file/img001/rP2g3klsQcGkehDYDWrfPQ.png)
