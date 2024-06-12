@@ -33,9 +33,7 @@ class OrderController extends Controller
 
             $orderData = json_decode($response->getBody()->getContents())->order;
 
-            if($orderData->status == 'processing'){
-                $order = Order::updateOrCreate(['id' => $orderData->id], (array) $orderData);  // Requerimiento (B)
-            }
+            $order = Order::updateOrCreate(['id' => $orderData->id], (array) $orderData);  // Requerimiento (F)
 
             return array('status' => true, 'order' => $orderData);
 
