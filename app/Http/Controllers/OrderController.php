@@ -69,4 +69,11 @@ class OrderController extends Controller
             return response(array('status' => false, 'message' => $e->getMessage()), 400)->header('Content-Type', 'application/json');
         }
     }
+
+    public function totals() // Requerimiento (D)
+    {
+        $orders = Order::selectRaw('COUNT(id) as count, SUM(amount) as total')->get();
+
+        return array('status' => true, 'orders' => $orders);
+    }
 }
