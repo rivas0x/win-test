@@ -6,6 +6,8 @@ use App\Http\Requests\FilterRequest;
 use App\Models\Order;
 use GuzzleHttp\Client;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class OrderController extends Controller
 {
     public function show(int $id) // Requerimiento (A)
@@ -59,7 +61,7 @@ class OrderController extends Controller
                 }
             }
 
-            $orders = $orders->get();
+            $orders = $orders->paginate();
 
             return array('status' => true, 'orders' => $orders);
 
@@ -72,6 +74,14 @@ class OrderController extends Controller
     {
         $orders = Order::selectRaw('COUNT(id) as count, SUM(amount) as total')->get();
 
-        return array('status' => true, 'orders' => $orders);
+        return array('status' => true, 'orders' => current($orders->toArray()));
+    }
+
+    public function pdf() // Requerimiento (E)
+    {
+        $orders = Order::all();
+
+        $pdf = Pdf::loadView('pdf', array('orders' => $orders));
+        return $pdf->stream();
     }
 }

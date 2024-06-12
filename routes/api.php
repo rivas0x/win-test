@@ -24,3 +24,5 @@ Route::get('/orders/{id}', [OrderController::class, 'show']); // Requerimiento (
 Route::get('/orders', [OrderController::class, 'index']); // Requerimiento (C)
 
 Route::get('/orders_totals', [OrderController::class, 'totals']); // Requerimiento (D)
+
+Route::get('/orders_pdf', [OrderController::class, 'pdf']); // Requerimiento (E)
