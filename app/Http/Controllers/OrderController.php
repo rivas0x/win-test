@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilterRequest;
 use App\Models\Order;
 use GuzzleHttp\Client;
 
@@ -37,6 +38,34 @@ class OrderController extends Controller
             }
 
             return array('status' => true, 'order' => $orderData);
+
+        } catch (\Exception $e) {
+            return response(array('status' => false, 'message' => $e->getMessage()), 400)->header('Content-Type', 'application/json');
+        }
+    }
+
+    public function index(FilterRequest $request) // Requerimiento (C)
+    {
+        try {
+            $request = $request->validated();
+
+            $orders = Order::query();
+
+            if(count($request->all()) > 0){
+                if(isset($request->status)){
+                    $orders->orderBy('status', $request->status);
+                }
+                if(isset($request->group_id)){
+                    $orders->orderBy('group_id', $request->group_id);
+                }
+                if(isset($request->amount)){
+                    $orders->orderBy('amount', $request->amount);
+                }
+            }
+
+            $orders = $orders->get();
+
+            return array('status' => true, 'orders' => $orders);
 
         } catch (\Exception $e) {
             return response(array('status' => false, 'message' => $e->getMessage()), 400)->header('Content-Type', 'application/json');
