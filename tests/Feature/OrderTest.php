@@ -28,9 +28,7 @@ class OrderTest extends TestCase
     public function test_can_list(): void
     {
         $filter = array(
-            'status' => 'ASC',
-            'group_id' => 'DESC',
-            'amount' => 'ASC',
+            'status' => 'processing'
         );
 
         $response = $this->json('GET', '/api/orders', $filter);
@@ -43,7 +41,7 @@ class OrderTest extends TestCase
     public function test_cannot_list(): void
     {
         $filter = array(
-            'status' => 'ASCd'
+            'status' => 'ok'
         );
 
         $response = $this->json('GET', '/api/orders', $filter);

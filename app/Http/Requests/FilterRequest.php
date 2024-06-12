@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+
 
 class FilterRequest extends FormRequest
 {
@@ -14,15 +16,18 @@ class FilterRequest extends FormRequest
      */
     public function failedValidation(Validator $validator)
     {
-        return $validator;
+        throw new HttpResponseException(response()->json([
+            'status' => false,
+            'message' => $validator->errors()
+        ], 400));
     }
 
     public function rules()
     {
         return [
-            'status' => 'nullable|in:ASC,DESC',
-            'group_id' => 'nullable|in:ASC,DESC',
-            'amount' => 'nullable|in:ASC,DESC',
+            'status' => 'nullable|in:processing,pending',
+            'group_id' => 'nullable',
+            'amount' => 'nullable',
         ];
     }
 }

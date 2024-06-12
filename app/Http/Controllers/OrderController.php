@@ -35,7 +35,10 @@ class OrderController extends Controller
 
             $orderData = json_decode($response->getBody()->getContents())->order;
 
-            $order = Order::updateOrCreate(['id' => $orderData->id], (array) $orderData);  // Requerimiento (F)
+            // Requerimiento (B) y Requerimiento (F)
+            if($orderData->status == 'processing' || $orderData->status == 'pending'){
+                $order = Order::updateOrCreate(['id' => $orderData->id], (array) $orderData);
+            }
 
             return array('status' => true, 'order' => $orderData);
 
@@ -47,21 +50,17 @@ class OrderController extends Controller
     public function index(FilterRequest $request) // Requerimiento (C)
     {
         try {
-            $orders = Order::query();
-
-            if(count($request->all()) > 0){
+            $orders = Order::where(function ($query) use ($request) {
                 if(isset($request->status)){
-                    $orders->orderBy('status', $request->status);
+                    $query->where('status', $request->status);
                 }
                 if(isset($request->group_id)){
-                    $orders->orderBy('group_id', $request->group_id);
+                    $query->where('group_id', $request->group_id);
                 }
                 if(isset($request->amount)){
-                    $orders->orderBy('amount', $request->amount);
+                    $query->where('amount', 'LIKE', $request->amount);
                 }
-            }
-
-            $orders = $orders->paginate();
+            })->paginate();
 
             return array('status' => true, 'orders' => $orders);
 
